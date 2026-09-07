@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Cars</title>
+    <style>
+        body { margin: 0; padding: 0; text-align: center; font-family: sans-serif; background-color: #222; color: #fff; }
+        #status { margin: 20px; font-size: 1.2rem; }
+        #game-board { width: 300px; height: 300px; background: #333; border: 2px solid #555; margin: 0 auto; position: relative; border-radius: 10px; }
+        #player { width: 20px; height: 20px; background: #00ff00; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); }
+    </style>
+</head>
+<body>
+
+    <h1>🚗 Capture Cars</h1>
+    <p id="status">Obteniendo ubicación GPS...</p>
+    
+    <div id="game-board">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        const statusText = document.getElementById('status');
+        const player = document.getElementById('player');
+
+        // Función para rastrear posición GPS
+        if ("geolocation" in navigator) {
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    statusText.innerText = `Lat: ${lat.toFixed(5)} | Lon: ${lon.toFixed(5)}`;
+                    
+                    // Simulación de movimiento visual en el tablero
+                    player.style.left = "50%";
+                    player.style.top = "50%";
+                },
+                (error) => {
+                    statusText.innerText = "Error: Permite el acceso al GPS en tu navegador.";
+                },
+                { enableHighAccuracy: true }
+            );
+        } else {
+            statusText.innerText = "Tu navegador no soporta geolocalización.";
+        }
+    </script>
+</body>
+</html>
